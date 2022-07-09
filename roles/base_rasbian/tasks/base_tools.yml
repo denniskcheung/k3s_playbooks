@@ -1,0 +1,12 @@
+---  
+#package install
+- name: Installing packages
+  ansible.builtin.apt: 
+    pkg:
+      - zsh
+      - git 
+      - mosh
+      - open-iscsi
+    state: latest
+  register: installation
+  become: true

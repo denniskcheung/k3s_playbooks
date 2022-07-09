@@ -1,0 +1,20 @@
+---
+#handlers file for base
+
+# restart dropbear
+- name: restart dropbear
+  service:
+    name: dropbear
+    state: restarted
+
+# restart openssh
+- name: restart ssh
+  service:
+    name: sshd
+    state: restarted
+  
+# restart telegraf
+- name: restart telegraf
+  service:
+    name: telegraf
+    state: restarted

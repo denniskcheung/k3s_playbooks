@@ -1,0 +1,5 @@
+---
+# Tasks file for base
+- import_tasks: core_os.yml
+- import_tasks: k3s.yml
+

@@ -1,0 +1,26 @@
+---
+# Ensuring default SSH keys are in place
+- name: Placing ansible Key
+  ansible.builtin.authorized_key: 
+    user: ansible 
+    key: "{{ lookup('file', 'files/authorized_keys.ansible.pub') }}"
+    
+- name: Placing dcheung Key
+  ansible.builtin.authorized_key: 
+    user: dcheung 
+    key: "{{ lookup('file', 'files/authorized_keys.dcheung.pub') }}"
+
+# Ensure ssh directory and keys have the right permissions
+- name: Change Ownership of .ssh directory
+  ansible.builtin.file:
+    path: /home/ansible/.ssh/
+    owner: ansible
+    group: sudo
+    mode: 0700
+    
+- name: Change Ownership of authorized_keys
+  ansible.builtin.file:
+    path: /home/ansible/.ssh/authorized_keys
+    owner: ansible
+    group: sudo
+    mode: 0600

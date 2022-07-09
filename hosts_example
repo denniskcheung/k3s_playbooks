@@ -1,0 +1,20 @@
+[master]
+master1  ansible_connection=ssh   var_hostname=master1 var_cluster=master
+master2  ansible_connection=ssh   var_hostname=master2 var_cluster=server
+master3  ansible_connection=ssh   var_hostname=master3 var_cluster=server
+
+[workers]
+worker1  ansible_connection=ssh  var_hostname=worker1
+worker2  ansible_connection=ssh  var_hostname=worker2
+worker3  ansible_connection=ssh  var_hostname=worker3
+worker4  ansible_connection=ssh  var_hostname=worker4
+worker5  ansible_connection=ssh  var_hostname=worker5
+worker6  ansible_connection=ssh  var_hostname=worker6
+worker7  ansible_connection=ssh  var_hostname=worker7
+
+[k3s:children]
+master
+workers
+
+[all:vars]
+ansible_connection=ssh

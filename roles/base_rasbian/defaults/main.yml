@@ -1,0 +1,3 @@
+---
+# defaults file for base installs
+remove_users: ["diet_pi"]

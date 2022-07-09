@@ -1,0 +1,6 @@
+*.retry
+hosts
+ansible.cfg
+
+/.idea
+

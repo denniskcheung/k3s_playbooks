@@ -1,0 +1,8 @@
+---
+# Tasks file for base
+- include: host.yml
+- include: base_tools.yml
+- include: users.yml
+- include: timezone.yml
+- include: ssh_keys.yml
+- include: harden_ssh.yml

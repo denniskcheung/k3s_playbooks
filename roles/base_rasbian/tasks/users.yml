@@ -1,0 +1,76 @@
+---
+# Creating default users
+- name: Create default User
+  ansible.builtin.user: 
+    name: dcheung 
+    comment: Dennis Cheung
+    group: sudo
+    shell: /usr/bin/zsh
+
+- name: Create ansible User
+  ansible.builtin.user: 
+    name: ansible 
+    comment: ansible user
+    group: sudo
+
+# Adding ansible user to sudoers
+- name: Configure sudoers file for ansible user
+  ansible.builtin.lineinfile: 
+    dest: /etc/sudoers.d/ansible
+    line: "ansible ALL=(ALL) NOPASSWD: ALL"
+    state: present
+    create: yes
+    #validate: 'visudo -cf /etc/sudoers.d/ansible'
+#    validate: 'visudo -cf %s'
+
+# Adding default user to sudoers
+- name: Configure sudoers file for ansible user
+  ansible.builtin.lineinfile:
+    dest: /etc/sudoers.d/dcheung
+    line: "dcheung ALL=(ALL) NOPASSWD: ALL"
+    state: present
+    create: yes
+
+
+- name: Check if .oh-my-zsh exists
+  ansible.builtin.stat:
+    path: /home/dcheung/.oh-my-zsh
+  register: stat_oh_my_zsh_result
+
+- name: Cloning  oh-my-zsh
+  ansible.builtin.git:
+    repo: https://github.com/robbyrussell/oh-my-zsh
+    dest: /home/dcheung/.oh-my-zsh
+  when: not stat_oh_my_zsh_result.stat.exists
+
+- name: Creating new ~/.zshrc
+  ansible.builtin.copy:
+    src: /home/dcheung/.oh-my-zsh/templates/zshrc.zsh-template
+    dest: /home/dcheung/.zshrc
+    remote_src: yes
+    mode: 0755
+    force: no
+
+# Ensure directory have the right permissions
+- name: Change Ownership of .oh-my-zsh directory
+  ansible.builtin.file:
+    path: /home/dcheung/.oh-my-zsh/
+    owner: dcheung
+    group: sudo
+    mode: 0755
+    recurse: yes
+
+- name: zshrc theme
+  ansible.builtin.lineinfile:
+    dest: /home/dcheung/.zshrc
+    regexp: '^ZSH_THEME\=.*'
+    line: ZSH_THEME="agnoster"
+    state: present
+
+# Remove users
+- name: Remove the user 'pi'
+  user:
+    name: pi
+    state: absent
+    remove: yes
+    password_lock: yes
